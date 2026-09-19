@@ -68,3 +68,16 @@ Crime patterns varied significantly across cities between 2019 and 2020, as some
 ### Task 9: Save Your Work and Put it on GitHub
 
 Save this notebook, then commit it to your local repository. Push the changes to your GitHub repository and submit the URL for this file in ELMS.
+
+### Task 10: Percentiles
+
+10 cities are above the 90th percentile and one city, Cumberland, is at exactly the 90th percentile.
+
+These results do not change my previous story idea as it was about COVID having an inconsistent affect on crime throughout Maryland cities. These results do not necessarily deal with that affect and do not deal with percent change which was a key part of the story.
+
+```{r}
+md_cities_percentiles <- md_cities_rates |> mutate(violent_percentile = ntile(violent_rate_2020, 100))
+
+md_cities_rates |>
+  summarise(violent_IQR = IQR(violent_rate_2020))
+```
