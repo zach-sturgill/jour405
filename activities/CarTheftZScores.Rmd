@@ -12,10 +12,7 @@ knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
 
 In this notebook, you'll analyze monthly car theft data from 2017 to 2025 using z-scores. Z-scores help us identify statistically unusual values in our dataset, which can point to important patterns or outliers that deserve journalistic attention.
 
-A z-score tells us how many standard deviations a data point is from the mean. Generally:
-- Z-scores between -2 and 2 represent typical values (about 95% of the data)
-- Z-scores beyond ±2 indicate unusual values that might warrant investigation
-- Z-scores beyond ±3 are very unusual (only about 0.3% of normally distributed data)
+A z-score tells us how many standard deviations a data point is from the mean. Generally: - Z-scores between -2 and 2 represent typical values (about 95% of the data) - Z-scores beyond ±2 indicate unusual values that might warrant investigation - Z-scores beyond ±3 are very unusual (only about 0.3% of normally distributed data)
 
 ## Setup
 
@@ -90,7 +87,7 @@ car_thefts %>%
 
 ## Identifying Unusual Months
 
-Let's identify months with unusually high or low car theft numbers (|z-score| > 2):
+Let's identify months with unusually high or low car theft numbers (\|z-score\| \> 2):
 
 ```{r unusual-months}
 # Find months with unusual car theft numbers
@@ -249,13 +246,13 @@ unusual_seasonal %>%
 
 Based on our z-score analysis, here are some potential journalistic angles:
 
-1. **Extreme Outliers**: Months with z-scores beyond ±3 represent extremely unusual car theft activity. We could investigate what specific events or factors contributed to these extreme values.
+1.  **Extreme Outliers**: Months with z-scores beyond ±3 represent extremely unusual car theft activity. We could investigate what specific events or factors contributed to these extreme values.
 
-2. **Seasonal Anomalies**: Months that are statistically unusual for their season might indicate changes in theft patterns that break from traditional seasonal trends.
+2.  **Seasonal Anomalies**: Months that are statistically unusual for their season might indicate changes in theft patterns that break from traditional seasonal trends.
 
-3. **Trend Changes**: Clusters of months with high z-scores might indicate shifts in car theft trends that could be linked to economic conditions, law enforcement policies, or other social factors.
+3.  **Trend Changes**: Clusters of months with high z-scores might indicate shifts in car theft trends that could be linked to economic conditions, law enforcement policies, or other social factors.
 
-4. **Population Impact**: Differences between raw number z-scores and per capita z-scores might reveal how population changes affect crime statistics reporting.
+4.  **Population Impact**: Differences between raw number z-scores and per capita z-scores might reveal how population changes affect crime statistics reporting.
 
 ## Conclusion
 
@@ -263,15 +260,15 @@ Z-scores provide a powerful statistical tool for identifying unusual patterns in
 
 When reporting on these findings, remember to:
 
-1. **Provide Context**: Explain what a z-score means in terms readers can understand
-2. **Investigate Causes**: Follow up on unusual values to understand the underlying reasons
-3. **Consider Multiple Metrics**: Look at both raw numbers and population-adjusted figures
-4. **Account for Seasonality**: Consider whether values are unusual compared to the same time of year
-
+1.  **Provide Context**: Explain what a z-score means in terms readers can understand
+2.  **Investigate Causes**: Follow up on unusual values to understand the underlying reasons
+3.  **Consider Multiple Metrics**: Look at both raw numbers and population-adjusted figures
+4.  **Account for Seasonality**: Consider whether values are unusual compared to the same time of year
 
 ### How likely is a specific car theft month?
 
 Let's pick the month with the highest total and walk through the process: calculate its z-score, use `pnorm()` to find the probability, then check against the actual data.
+
 ```{r pnorm-specific-month}
 # Find the month with the most car thefts
 highest_month <- car_thefts %>%
@@ -294,3 +291,5 @@ cat(sprintf("Actual data - proportion of months this high or higher: %.4f (%.2f%
 ```
 
 The `pnorm()` estimate and the actual proportion won't match perfectly — `pnorm()` assumes a normal distribution, and real data is never perfectly normal. But they should be in the same ballpark, and the comparison helps us see how well the normal model fits.
+
+I'm leaving my keys in my car in April
