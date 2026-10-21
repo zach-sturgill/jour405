@@ -41,7 +41,7 @@ sleep_stats
 
 **Answer this question:** Based on these numbers alone, what would you tell the health reporter? Why might it be risky to report the average as the definitive answer for all students?
 
-ANSWER HERE
+I would tell the health reporter that students are mostly getting enough sleep with a mean of 7.73 hours. It might be risky to report the average as the definitive answer because of the low sample size.
 
 ### Task 3: Calculate the standard error
 
@@ -50,7 +50,7 @@ The standard error tells us how much our sample mean would vary if we took many 
 ```{r}
 sleep_stats <- sleep_stats |>
   mutate(
-    se_hours = sd_hours / sqrt(37)
+    se_hours = sd_hours / sqrt(n)
   )
 
 sleep_stats
@@ -58,7 +58,7 @@ sleep_stats
 
 **Answer this question:** The standard error is much smaller than the standard deviation. Why? What does each one measure?
 
-ANSWER HERE
+The standard error is much smaller because it measures how much the mean, just one number, would differ while the standard deviation measures the spread of all of the data.
 
 ### Task 4: Calculate a 95% confidence interval
 
@@ -79,7 +79,7 @@ sleep_stats |>
 
 **Answer this question:** Write one sentence explaining what this confidence interval means in plain English that a reader would understand.
 
-ANSWER HERE
+19 times out of 20, the mean hours of sleep students get each night is between 7.28 and 8.2 hours.
 
 ### Task 5: Visualize the distribution with the confidence interval
 
@@ -112,7 +112,7 @@ ggplot(sleep_data, aes(x = hours)) +
 
 **Answer this question:** Look at the chart. Notice that the confidence interval is much narrower than the spread of individual data points. Why? What's the difference between the variation in individual sleep hours and the uncertainty about the average?
 
-ANSWER HERE
+The confidence interval is only about where the mean is which is why it is much narrower. The spread of individual data points shows each data point no matter how close or far away it is from the mean.
 
 ### Task 6: The CDC question — is 7 hours within the interval?
 
@@ -130,11 +130,11 @@ sleep_stats |>
 
 **Answer this question:** Based on this result, which of these headlines is justified? Why?
 
-  a) "Students Average More Than 7 Hours of Sleep"
-  b) "Students May Not Be Getting Enough Sleep, Survey Suggests"
-  c) "Survey: Students Getting Recommended Amount of Sleep"
+a)  "Students Average More Than 7 Hours of Sleep"
+b)  "Students May Not Be Getting Enough Sleep, Survey Suggests"
+c)  "Survey: Students Getting Recommended Amount of Sleep"
 
-ANSWER HERE
+C, because ci_lower is above 7 which means we are confident that students are getting the recommended amount of sleep.
 
 ### Task 7: What about a bigger sample?
 
