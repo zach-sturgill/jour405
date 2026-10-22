@@ -58,4 +58,4 @@ weekly_wmata |>
 
 **Answer this question:** Describe the trend you see. Is ridership going up, down, or staying flat? What are the big dips, and what might explain them? What would you want to know before writing a story about Metro weekly ridership trends?
 
-ANSWER HERE
+Ridership is slightly going up as the red dashed line shows a slight upward trend. Big dips in ridership occur at the start of the line chart, January 2025, and at the end of 2025 and beginning of 2026. The holidays could explain that big dip. Before writing a story on metro weekly ridership trends, I would want to know others trends that cause increases or decreases in the data. For example, I would want to know why in both years the chart peaks in the early months of the year.
