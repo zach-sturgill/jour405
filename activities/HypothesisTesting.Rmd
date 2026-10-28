@@ -22,9 +22,9 @@ library(tidyverse)
 
 Before we run any tests, we need to state our hypotheses. The null hypothesis is what we assume to be true until we have evidence otherwise — like "innocent until proven guilty." Fill in the REPLACE_ME values.
 
-**Null Hypothesis (H₀):** REPLACE_ME
+**Null Hypothesis (H₀):** There is no meaningful difference in response times
 
-**Alternative Hypothesis (H₁):** REPLACE_ME
+**Alternative Hypothesis (H₁):** There is a difference in response times
 
 ```{r}
 # Response times (in minutes) after the community policing program
@@ -56,8 +56,8 @@ Let's see what the new response times look like. Replace the REPLACE_ME values.
 summary_stats <- response_data |>
   summarize(
     sample_size = n(),
-    sample_mean = mean(REPLACE_ME),
-    sample_sd = sd(REPLACE_ME),
+    sample_mean = mean(response_time),
+    sample_sd = sd(response_time),
     standard_error = sample_sd / sqrt(sample_size)
   )
 
@@ -66,7 +66,7 @@ summary_stats
 
 **Answer this question:** The sample mean is lower than the baseline of 8.2 minutes. How much lower? Does that seem like a meaningful improvement to you, just based on the numbers? What would you want to know before deciding?
 
-ANSWER HERE
+The sample mean is now 7.8. This does not seem like a meaningful improvement just based on the numbers. Before deciding, I would want to know the margin of error and confidence interval for borth means.
 
 ### Task 4: Perform a one-sample t-test (2 points)
 
@@ -74,12 +74,12 @@ Now we formally test the police chief's claim. Since we're testing whether respo
 
 ```{r}
 # Set our significance level
-alpha <- REPLACE_ME
+alpha <- 0.05
 
 # Perform the t-test
 t_test_result <- t.test(
   response_data$response_time,
-  mu = REPLACE_ME,
+  mu = baseline_mean,
   alternative = "less"
 )
 
@@ -107,7 +107,7 @@ results
 
 **Answer this question:** Based on the p-value, can we reject the null hypothesis? What does this tell the police chief — and what does it NOT tell him?
 
-ANSWER HERE
+Based on the p-value, we can reject the null hypothesis. This tells the police chief there is a change in response times but it does not tell him how meaningful it is.
 
 ### Task 6: Visualize the results
 
@@ -140,7 +140,7 @@ The formula is: d = (baseline mean - sample mean) / baseline standard deviation
 Replace the REPLACE_ME values.
 
 ```{r}
-effect_size <- (REPLACE_ME - summary_stats$sample_mean) / REPLACE_ME
+effect_size <- (baseline_mean - summary_stats$sample_mean) / baseline_sd
 
 effect_size_interpretation <- case_when(
   abs(effect_size) < 0.2 ~ "Negligible",
@@ -159,28 +159,29 @@ tibble(
 
 **Answer this question:** The result is statistically significant, but the effect size is small. In practical terms, the improvement is about 25 seconds per call. The police chief is claiming success. Would you write a story saying the program works? How would you frame the findings honestly — acknowledging both that the improvement is real AND that it's small?
 
-ANSWER HERE
+I would write a story saying that the program works, but it only has a small effect. I would frame this by stating that there is a change in response times with the new program but it is only a small change of 25 seconds.
 
 ### Task 8: The journalist's framework (5 points)
 
 The videos you watched describe two questions you need to ask about any statistical result:
 
-1. **Is it statistically significant?** (Is the result unlikely to be due to chance?)
-2. **Is it meaningfully significant?** (Is the effect large enough to matter?)
+1.  **Is it statistically significant?** (Is the result unlikely to be due to chance?)
+2.  **Is it meaningfully significant?** (Is the effect large enough to matter?)
 
 Apply this framework to the community policing data:
 
 **Question 1:** Write 1-2 sentences answering whether the result is statistically significant and how you know.
 
-ANSWER HERE
+The result is statistically significant because the p-value is much smaller than 0.05.
 
-**Question 2:** Write 1-2 sentences answering whether the result is meaningfully significant. Consider: the program cost the city $2 million to implement. Is a 25-second improvement in response times worth that investment? What context would you need to answer that question?
+**Question 2:** Write 1-2 sentences answering whether the result is meaningfully significant. Consider: the program cost the city \$2 million to implement. Is a 25-second improvement in response times worth that investment? What context would you need to answer that question?
 
-ANSWER HERE
+The result is not meaningfully significant as the value of Cohen's d tells us there is only a small effect. Also, a 25-second improvement is likely not worth a \$2 million investment to implement this change, but I would need more context on how valuable 25 seconds is in this city in order to determine if this was worth it.
 
 **Question 3:** Write a headline and a 2-3 sentence lede for a story about these findings. Your text should accurately reflect both the statistical significance and the effect size — don't let the police chief's framing drive the story if the data tells a more nuanced one.
 
-ANSWER HERE
+Headline: Westbrook emergency response times have improved, but not by much
 
+Lede: After investing \$2 million into a new community policing program in January, the Westbrook police chief claimed emergency response times improved as a result. While there has been an improvement, response times have only decreased by 25 seconds.
 
 When you are finished, save your work, switch to GitHub Desktop, then add, commit and push your changes to GitHub and submit the URL of the notebook in ELMS.
