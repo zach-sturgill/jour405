@@ -1,0 +1,18 @@
+---
+title: "final_project"
+output: html_document
+---
+
+```{r}
+install.packages("hoopR")
+library(tidyverse)
+library(hoopR)
+```
+
+```{r}
+nba_team_box <- load_nba_team_box(
+  seasons = 2002:2026
+)
+```
+
+This dataset has team box scores for each game since the 2002 NBA season. In each row there is the. team that played, the date, true or false for if they won and in-game stats such as points, rebounds, assists, etc.. While each row covers just one team, there is a game id column which clearly states the game each box score is from. There is also a season type column, which separates regular season games from playoff games. These two columns will be most important to my analysis along with field goals made and attempted, three pointers made and attempted and the team winner. Columns that are missing include overall season statistics such as league-wide three-point averages for each season. I will need to calculate each team's three-point attempt rate and the league average three-point attempt rate. Additionally, win percentage is not included in this dataset because it covers each game rather than overall season statistics. This means I will have to calculate each team's win percentage for each season on my own. One question I have is how should I go about measuring postseason success for this project? In this dataset, there is no column for which round of the playoffs each playoff game was played in. I could calculate winning percentage for each team in the playoffs but that may lead to inaccurate results because some playoff series go much longer than others. For example, Team A got a sweep in the first round and lost in 7 games in the next round leading to a record of 7-4. Team B won in 7 games in each of the first 2 rounds and then lost in 7 the next round leading to a record of 11-10. Team B had the more successful season but based on winning percentage Team A was more successful.
