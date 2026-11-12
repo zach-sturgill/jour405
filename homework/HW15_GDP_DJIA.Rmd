@@ -13,13 +13,15 @@ Your task in this assignment will be to examine the relationship between those t
 ### Task 1: Load the tidyverse
 
 ```{r}
+library(tidyverse)
 ```
 
 ### Task 2: Load the GDP and DJIA data
 
-Load the GDP data from https://raw.githubusercontent.com/dwillis/jour405/refs/heads/main/data/gdp_djia.csv
+Load the GDP data from <https://raw.githubusercontent.com/dwillis/jour405/refs/heads/main/data/gdp_djia.csv>
 
 ```{r}
+gdp <- read_csv("https://raw.githubusercontent.com/dwillis/jour405/refs/heads/main/data/gdp_djia.csv")
 ```
 
 ### Task 3: Calculate the correlation coefficient
@@ -27,6 +29,7 @@ Load the GDP data from https://raw.githubusercontent.com/dwillis/jour405/refs/he
 Use the `cor()` function to calculate the correlation coefficient between the DJIA and GDP.
 
 ```{r}
+gdp |> summarize(correlation = cor(GDP, DJIA, method="pearson"))
 ```
 
 ### Task 4: Create a scatterplot
@@ -34,12 +37,19 @@ Use the `cor()` function to calculate the correlation coefficient between the DJ
 Use the `ggplot()` function to create a scatterplot of the DJIA and GDP. Be sure to label your axes and add a title.
 
 ```{r}
+gdp |> 
+  ggplot() +
+  geom_point(aes(x=GDP, y=DJIA, label=Quarter)) +
+  geom_smooth(aes(x=GDP, y=DJIA, method="lm")) +
+  labs(
+    title = "Relationship between GDP and DJIA since 2013"
+  )
 ```
 
 ### Task 5: Describe our results
 
 Write a few sentences about the relationship between the DJIA and GDP. Is there a strong correlation between the two variables? What does the scatterplot show?
 
+There is a strong correlation between GDP and the DJIA. The correlation coefficient of 0.95 indicates a very strong positive correlation between the two variables. The scatterplot reinforces this as it shows as GDP goes up, the Dow Jones Industrial Average also goes up. Additionally, the line of best fit goes almost perfectly upward throughout the scatterplot, further proving the strong positive correlation between GDP and the DJIA.
 
 When you are done, save your work, switch to GitHub Desktop, then add, commit and push your changes to GitHub and submit the URL of the notebook in ELMS.
-
