@@ -3,6 +3,14 @@ title: "final_project"
 output: html_document
 ---
 
+Hypothesis 1: Within NBA seasons, teams with higher three-point attempt rates tend to have higher regular-season winning percentages
+
+Hypothesis 2: The association between three-point attempt rate and regular-season winning percentage changed between earlier and later seasons.
+
+Hypothesis 3: Among playoff teams, is a higher regular-season three-point attempt rate associated with a greater probability of winning at least one playoff series?
+
+For the first hypothesis, I could run a correlation test to see how strong the relationship is between three-point attempt rate and regular-season winning percentage. Calculating the correlation coefficient between these two would help determine what exactly their relationship is. This could also be done for hypothesis 2. I could separate the data into earlier and later seasons and conduct two different correlation tests. After calculating each correlation coefficient, I will be able to determine how the relationship between three-point attempt rate and regular-season winning percentage changed over time. For hypothesis 3, I am a little unsure of what tests would be best to conduct. I learned about two-sample t-tests in high school, which could work for this hypothesis. I could separate teams that won at least one playoff series and teams that did not win at least one playoff series. This would measure how if three-point attempt rate significantly differed between teams that won at least one playoff series and teams that did not. However, we have not done this test in class so I do not fully know how I would write the code for this test.
+
 ```{r}
 install.packages("hoopR")
 library(tidyverse)
@@ -11,6 +19,9 @@ library(hoopR)
 
 ```{r}
 nba_team_box <- load_nba_team_box(
+  seasons = 2002:2026
+)
+nba_team_stats <- load_nba_stats_team_season_stats(
   seasons = 2002:2026
 )
 ```
