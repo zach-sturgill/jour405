@@ -1,6 +1,6 @@
 ---
 title: "Identifying Schools with Biggest Differences in Math Test Scores, Part 2"
-author: "YOUR NAME"
+author: "Zach Sturgill"
 ---
 
 ```{r}
@@ -30,8 +30,7 @@ schools |> arrange(desc(`FARMS Pct`)) |> head(10)
 
 Are there any data quality issues like the ones you found in the Pennsylvania data? How does the distribution of FARMS percentages compare between the two counties? Note anything that concerns you or gives you confidence in the data.
 
-ANSWER HERE
-
+It appears the schools with the highest have FARMS percentages, have a low of percentage of students that met or exceeded test score expectations. This is different from the Pennsylvania data, as that data showed that the percentage of met or exceeded was all over the place even with high FARMS percentages. Also, that data had several schools with a FARMS percentage of 100 while this data does not have any.
 
 ### Task 2: Create a Scatterplot and Compare (5 points)
 
@@ -39,7 +38,7 @@ Replace the REPLACE_ME value with the correct variable name to create a scatterp
 
 ```{r}
 schools |>
-  ggplot(aes(x = `REPLACE_ME`, y = `% Met or Exceeded Math Expectations`)) +
+  ggplot(aes(x = `FARMS Pct`, y = `% Met or Exceeded Math Expectations`)) +
   geom_point() +
   geom_smooth(method = "lm", se = FALSE, color = "red") +
   labs(x = "FARMS Percentage", y = "% Met or Exceeded Math Expectations",
@@ -48,22 +47,20 @@ schools |>
 
 Describe what you see. Then compare this scatterplot specifically to the Pennsylvania one: what differences do you notice in the direction, strength, and spread of the relationship? The two counties share a name and are both suburban — what might explain why they look so different?
 
-ANSWER HERE
-
+This scatterplot appears to show a strong negative relationship between the two variables, which is drastically different from the Pennsylvania scatterplot which showed a weak positive relationship. Something that might explain why they look so different is because the counties are in different states, meaning there could be key differences in funding, class sizes and more.
 
 ### Task 3: Linear Regression Model (5 points)
 
 Replace the REPLACE_ME value with the correct variable name to run a linear regression model predicting math scores from FARMS percentage.
 
 ```{r}
-model <- lm(`REPLACE_ME` ~ `FARMS Pct`, data = schools)
+model <- lm(`% Met or Exceeded Math Expectations` ~ `FARMS Pct`, data = schools)
 summary(model)
 ```
 
 Report the three key statistics: the p-value, the Adjusted R-squared, and the coefficient for FARMS Pct. Then interpret them together — not separately. What does the combination of these three numbers tell you about the relationship between poverty and math scores in Montgomery County, Md.? Is this model worth using? How does it compare to the Pennsylvania model?
 
-ANSWER HERE
-
+The p-value is 2.2 x 10\^-16, the Adjusted R-squared value is 0.6734 and the coefficient is -0.59511. The combination of these three numbers tells me there is a moederately strong negative relationship between poverty and math scores in the county. This model is worth using because it shows a significant relationship between the two variables, unlike the Pennsylvania model which showed a weak relationship between the two.
 
 ### Task 4: Identifying Schools with the Biggest Residuals (6 points)
 
@@ -72,9 +69,9 @@ Replace the REPLACE_ME values with the correct variable names to calculate predi
 ```{r}
 schools <- schools |>
   mutate(
-    predicted = predict(REPLACE_ME),
+    predicted = predict(model),
     residual = `% Met or Exceeded Math Expectations` - predicted,
-    abs_residual = abs(REPLACE_ME)
+    abs_residual = abs(residual)
   ) |>
   arrange(desc(abs_residual))
 
@@ -83,13 +80,9 @@ head(schools |> select(1, `FARMS Pct`, `% Met or Exceeded Math Expectations`, pr
 
 Identify the school with the largest positive residual (doing much better than the model predicts) and the school with the largest negative residual (doing much worse). For each school, find its zip code and look it up on [CensusReporter.org](https://censusreporter.org).
 
-For each of the two schools, answer:
-- What does the demographic and economic profile of the zip code look like?
-- Does anything in that profile help explain why the school is over- or under-performing the model?
-- What would your first reporting question be to the principal of that school?
+For each of the two schools, answer: - What does the demographic and economic profile of the zip code look like? - Does anything in that profile help explain why the school is over- or under-performing the model? - What would your first reporting question be to the principal of that school?
 
-ANSWER HERE
-
+Fox Chapel Elementary has the largest positive residual and Germantown Elementary has the largest negative residual. The demographic and economic profiles of the two zip codes are very similar. Race and ethnicity and age range are very similar, along with income and poverty. The only key difference is the number of households. Fox Chapel's zip code has only 8,783 while Germantown's zip code has 22,662. This does not help explain why Fox Chapel is over-performing and why Germantwon is under-performing. My firts reporting question to each school's principal would be what resources do they have that might explain why they are over-/under-performing.
 
 ### Task 5: Evaluate the Model and Write the Pitch (7 points)
 
@@ -97,4 +90,4 @@ You've now run this analysis on two counties. Return to the school board member'
 
 Write a short story pitch of 4-6 sentences that addresses all of the following: Does the Maryland data support or contradict the claim? How does it compare to what you found in Pennsylvania? What would you ask the school board member if you called them for comment? And what's the most interesting specific finding from your residuals analysis: which school would you want to visit first, and why?
 
-ANSWER HERE
+The Maryland data does support the school board member's claim that elementary schools with fewer students on free and reduced-price meals do better on standardized math tests. This contradicts what I found in the Pennsylvania data, which did not support the school board's member claim. I would like to ask the school board member that led them to make this claim, and did they have any evidence to back it up. I would also like to visit Germantown Elementary to see why they under-performed so much on their scores. This interests me because Fox Chapel, just a 10 minute drive away from Germantown, over-performed by the largest margin of any school in the dataset.

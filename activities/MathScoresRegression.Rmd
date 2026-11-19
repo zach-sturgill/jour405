@@ -95,7 +95,7 @@ cat("  Adjusted R-squared:", summary(model_filtered)$adj.r.squared, "\n")
 
 How did removing those schools change the model? Did the coefficient change direction? Did the p-value or R-squared improve meaningfully? What does this tell you about the influence of suspicious data values on a regression model?
 
-Removing those schools made the relationship stronger, although the relationship between the two variables is still not very strong. The coefficient did not change direction, but the relationship became stronger. The p-value improved somewhat meaningfully, as it went by up almost 0.3. The Adjusted r-squared value did not improve meaningfully, as it only went up by about 4%. This tells me that suspicious data values can have a huge influence on a regression model. It may not have had one on this specific model, but this proves that the regression values can meaningfully change after suspicious values are filtered out, which can change the strength or direction of a relationship.
+Removing those schools made the relationship stronger, although the relationship between the two variables is still not very strong. The coefficient did not change direction, but the relationship became stronger. The p-value improved somewhat meaningfully, as it changed to 0.04 making the relationship statistically significant. The Adjusted r-squared value did not improve meaningfully, as it only went up by about 4%. This tells me that suspicious data values can have a huge influence on a regression model. It may not have had one on this specific model, but this proves that the regression values can meaningfully change after suspicious values are filtered out, which can change the strength or direction of a relationship.
 
 ### Task 5: Even the Better Model Has Problems
 
