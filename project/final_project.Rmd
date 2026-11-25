@@ -26,4 +26,102 @@ nba_team_stats <- load_nba_stats_team_season_stats(
 )
 ```
 
+**Loading team seasons data:**
+
+```{r}
+# These NBA Cup finals do not count toward regular-season records.
+cup_finals <- as.Date(c("2023-12-09", "2024-12-17", "2025-12-16"))
+
+team_seasons <- nba_team_box |>
+  filter(
+    season_type == 2,        # Regular season
+    team_id %in% 1:30,       # NBA teams; excludes All-Star teams
+    !game_date %in% cup_finals
+  ) |>
+  group_by(season, team_id, team_display_name) |>
+  summarise(
+    three_point_rate = sum(three_point_field_goals_attempted) /
+      sum(field_goals_attempted),
+    win_pct = mean(team_winner),
+    .groups = "drop"
+  )
+```
+
+**Hypothesis 1:**
+
+```{r}
+team_seasons |> summarize(correlation = cor(three_point_rate, win_pct, method="pearson"))
+```
+
+The correlation coefficient value of 0.11 indicates a very weak relationship between three-point attempt rate and regular-season win percentage.
+
+```{r}
+team_seasons |> 
+  ggplot() +
+  geom_point(aes(x=three_point_rate, y=win_pct)) +
+  geom_smooth(aes(x=three_point_rate, y=win_pct, method="lm"))
+```
+
+The scatterplot confirms what the correlation coefficient proves as the data is clearly scattered around throughout. There is no clear relationship indicated from the scatterplot.
+
+**Hypothesis 2:**
+
+```{r}
+team_seasons <- team_seasons |>
+  mutate(
+    earlier_seasons = season < 2014,
+    later_seasons = season >= 2014
+  )
+
+team_seasons |> 
+  filter(earlier_seasons = TRUE) |>
+  summarize(correlation = cor(three_point_rate, win_pct, method="pearson"))
+
+team_seasons |> 
+  filter(later_seasons = TRUE) |>
+  summarize(correlation = cor(three_point_rate, win_pct, method="pearson"))
+```
+
+I got the same exact correlation coefficient value for both tests. This seems really unlikely and I am wondering if I did something wrong in the code somewhere. However, if this is normal, it indicates a very weak relationship between three-point attempt rate and regular-season winning percentage from both 2002-2013 and 2014-2026. Also, there is no difference in the correlation coefficients which means the relationship did not got any stronger or weaker in later seasons. However, this again seems really unlikely as it is the exact same: 0.1133475 for both.
+
+**Hypothesis 3:**
+
+```{r}
+playoff_results <- nba_team_box |>
+  filter(season_type == 3, team_id %in% 1:30) |>
+  group_by(season, team_id, opponent_team_id) |>
+  summarise(
+    wins = sum(team_winner),
+    losses = sum(!team_winner),
+    .groups = "drop"
+  ) |>
+  group_by(season, team_id) |>
+  summarise(
+    won_series = any(wins > losses),
+    .groups = "drop"
+  )
+
+# The join keeps only teams that appeared in the playoffs.
+playoff_comparison <- team_seasons |>
+  inner_join(playoff_results, by = c("season", "team_id"))
+
+playoff_comparison |>
+  group_by(won_series) |>
+  summarise(
+    team_seasons = n(),
+    mean_three_point_rate = mean(three_point_rate),
+    median_three_point_rate = median(three_point_rate),
+    .groups = "drop"
+  )
+```
+
+```{r}
+t.test(
+  three_point_rate ~ won_series, data = playoff_comparison)
+```
+
+To do this, I looked up "t test r example" and Google's AI Overview gave this output: <https://docs.google.com/document/d/1XfXl-Pfbmb2a5aS-Dtp-EGcm1EdPoCxthF9YXcDxP1Y/edit?usp=sharing>
+
+Teams that won a playoff series had a higher three-point attempt rate by by about 1.5%. However, the p-value is 0.1044 which means this is not stastically significant.\
+
 This dataset has team box scores for each game since the 2002 NBA season. In each row there is the. team that played, the date, true or false for if they won and in-game stats such as points, rebounds, assists, etc.. While each row covers just one team, there is a game id column which clearly states the game each box score is from. There is also a season type column, which separates regular season games from playoff games. These two columns will be most important to my analysis along with field goals made and attempted, three pointers made and attempted and the team winner. Columns that are missing include overall season statistics such as league-wide three-point averages for each season. I will need to calculate each team's three-point attempt rate and the league average three-point attempt rate. Additionally, win percentage is not included in this dataset because it covers each game rather than overall season statistics. This means I will have to calculate each team's win percentage for each season on my own. One question I have is how should I go about measuring postseason success for this project? In this dataset, there is no column for which round of the playoffs each playoff game was played in. I could calculate winning percentage for each team in the playoffs but that may lead to inaccurate results because some playoff series go much longer than others. For example, Team A got a sweep in the first round and lost in 7 games in the next round leading to a record of 7-4. Team B won in 7 games in each of the first 2 rounds and then lost in 7 the next round leading to a record of 11-10. Team B had the more successful season but based on winning percentage Team A was more successful.
